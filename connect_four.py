@@ -1,8 +1,5 @@
 import os
 
-
-
-
 def showBoard(grid):
 	print(" 1  2  3  4  5  6  7")
 	for line in grid:
@@ -28,24 +25,85 @@ def drop(slot, player, grid):
 				else:
 					continue
 
+
+def checkWinner(grid, player, slot):
+	y = int(slot)-1
+	x = -1
+	colstr = ""
+
+	for i in range(6):
+		colstr = colstr + str(grid[i][y])
+		if grid[i][y] != player:
+			continue
+		elif x == -1 and grid[i][y] == player:
+			x = i
+
+	rowstr = ''.join(map(str,grid[x]))
+
+	smaller = min(x,y)
+	xs = x-smaller
+	ys = y-smaller
+
+	adiag = ""	# \
+	while(1):
+		adiag = adiag + str(grid[xs][ys])
+		xs = xs + 1
+		ys = ys + 1
+
+		if xs > 5 or ys > 6:
+			break
+
+	yz = x + y
+	xz = 0
+	if yz > 6:
+		xz = yz - 6
+		yz = 6
+
+	bdiag = "" 	# /
+	while(1):
+		bdiag = bdiag + str(grid[xz][yz])
+		xz = xz + 1
+		yz = yz - 1
+
+		if xz > 5 or yz < 0:
+			break
+	win = str(player)*4
+	if (win in rowstr) or (win in colstr) or (win in adiag) or (win in bdiag):
+		return True
+	else:
+		return False
+	# print("row: ", rowstr)
+	# print("col: ", colstr)
+	# print("adiag: ", adiag)
+	# print("bdiag: ", bdiag)
+
+
+
+
+
 grid = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]]
 
 
 
 player = 0
 details = "Player " + str(player + 1) + " turn"
+result = False
 while (1):
 	os.system('cls' if os.name == 'nt' else 'clear')
 	showBoard(grid)
 	print(details)
-	# print("Enter player #: ", end="")
-	# player = int(input())	
+	if result: break
 	print("Enter slot #: ", end="")
 	slot = str(input())
 	details = drop(slot, player+1, grid)
+
 	if details == None:
-		player = (player + 1) % 2
-		details = "Player " + str(player + 1) + " turn"
+		result = checkWinner(grid, player+1, slot)
+		if result == False:
+			player = (player + 1) % 2
+			details = "Player " + str(player + 1) + " turn"
+		else:
+			details = "Player " + str(player + 1) + " wins!"
 
 
 
@@ -93,7 +151,7 @@ while (1):
 
 
 # a = '''
-# ░░░░░ █████ ▓▓▓▓▓ ▓▓▓▓▓ ▓▓▓▓▓ ▓▓▓▓▓ ▓▓▓▓▓ 
+# ░░░░░ ▟████ ▓▓▓▓▓ ▓▓▓▓▓ ▓▓▓▓▓ ▓▓▓▓▓ ▓▓▓▓▓ 
 # ░░░░░ █████ ▓▓▓▓▓ ▓▓▓▓▓ ▓▓▓▓▓ ▓▓▓▓▓ ▓▓▓▓▓ 
 # ░░░░░ █████ ▓▓▓▓▓ ▓▓▓▓▓ ▓▓▓▓▓ ▓▓▓▓▓ ▓▓▓▓▓ 
 
