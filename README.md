@@ -2,7 +2,7 @@
 
 A simple and clean terminal-based game of connect four.
 
-![image](https://github.com/a-maano/connect_four/blob/main/image.png?raw=true)
+![image](https://github.com/a-maano/connect_four/blob/master/image.png)
 
 ## Description
 
